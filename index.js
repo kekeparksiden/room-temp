@@ -21,11 +21,12 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage: storage,
     fileFilter: function (req, file, cb) {
+        const exp = process.env.EXPIRATION_MINUTES || 60;
         setTimeout(() => {
           fs.unlink(path.join(__dirname, './' + req.url.split("/")[2]), function (err) {
             if (err) console.log(err);
           });
-        }, 60000);
+        }, 60000 * exp);
         cb(null, true);
 } });
 
